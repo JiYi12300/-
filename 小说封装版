@@ -1,0 +1,75 @@
+#!/usr/bin/python  
+# -*- coding: utf-8 -*-  
+'''
+1.入口http://www.126shu.com/15/
+2.每个地址的元素,
+all_url = .find('dl').find_all('a')
+for a in all_url:
+    title = a.get_text()
+    href = 'http://www.126shu.com' + a['href']
+3.div id='content' ---> div class zjtj
+4.文件夹和文件名字
+5.保存
+'''
+'''
+1.通用的功能request
+2.最终就是保存文件
+3.解析顺序大页面 ---> 每一个章节url ---> 具体内容
+'''
+import os
+import requests
+from bs4 import BeautifulSoup
+class Novel:
+    def __init__(self):
+        self.test = ''
+        self.title = ''
+
+    def get(self, url, timeout=3):
+            headers = {'User-Agent': "Mozilla/5.0 (X11; CrOS i686 2268.111.0) AppleWebKit/536.11 (KHTML, like Gecko) Chrome/20.0.1132.57 Safari/536.11"}
+            html = requests.get(url, headers=headers)
+            return html.content.decode('gbk')
+
+    def theme_url(self, url):
+        #返回每一个章节的url        
+        all_url = BeautifulSoup(self.get(url), 'lxml').find('dl').find_all('a')
+        test = BeautifulSoup(self.get(url, 3), 'lxml').find('dl').find('dt').get_text().strip().replace('正文', '')
+        self.test = test
+        for a in all_url:
+            title = a.get_text()
+            self.title = title
+            #得到每一章节的具体地址
+            href = 'http://www.126shu.com' + a['href']
+            self.text(href)
+
+    def text(self, url):
+        #文本的具体内容
+        extract_text = BeautifulSoup(self.get(url), 'lxml').find('div', id='content')
+        [s.extract() for s in extract_text('div', class_='zjtj')]
+        [s.extract() for s in extract_text('div', class_='zjxs')]
+        ever_text = extract_text.get_text().replace('\xa0'*4, '\r\n')
+        self.save(ever_text)
+
+    def save(self, ever_text):
+        #文件夹的名字
+        test = self.test
+        name = self.title.strip().replace('?', '')
+        path = os.path.join('C:\\小说', test)
+        isExist = os.path.exists(path)
+        if not isExist:
+            print('创建文件夹: %s' % test)
+            os.makedirs(path)
+            os.chdir(path)
+            with open(name+ '.txt', 'w') as f:
+                print('这在写入 %s ' % name)
+                f.write(ever_text)
+        else:
+            os.chdir(path)
+            if os.path.isfile(name+'.txt'):
+                print('跳过 %s' % name)
+            else:
+                with open(name+ '.txt', 'w') as f:
+                    print('这在写入 %s ' % name)
+                    f.write(ever_text)
+
+novel = Novel()
+novel.theme_url('http://www.126shu.com/15/')
