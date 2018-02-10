@@ -1,0 +1,42 @@
+import requests
+from bs4 import BeautifulSoup
+import os
+
+def request(url):
+    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36'}
+    addr_url = requests.get(url, headers=headers)
+    decode_url = addr_url.content.decode("gb2312","ignore")         #如果编码方式不是utf8,就需要获取content而不是,text.content获取的是b''类型可以用decode,而text获取的是str,是经过requests猜码之后编译而成的str
+    return decode_url                                           #返回的是文本身,不在需要.text来获取文本
+start_url = 'http://www.zhuoku.com/'
+html_url = request(start_url)    #返回html源文件
+all_url = BeautifulSoup(html_url, 'lxml').find('ul').find_all('a', class_='title')
+print(len(all_url))
+for a in all_url:
+    title = a.get_text()
+    href = 'http://www.zhuoku.com/' + a['href'][:-4] + '(1).htm#turn'
+    theme_url = request(href)
+    image1_url = BeautifulSoup(theme_url, 'lxml')
+    image_page = len(image1_url.find('div', id='yema').find_all('li'))
+    for n in range(1, image_page+1):
+        image_addr = 'http://www.zhuoku.com/' + a['href'][:-4] + '(%s).htm#turn' % n
+        image_url = request(image_addr)
+        image_turly_addr = BeautifulSoup(image_url, 'lxml').find('div', id='bizhiimg').find('img')['src']
+        #print(image_turly_addr)
+        header = {'Referer':image_turly_addr,'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36'}
+        image = requests.get(image_turly_addr, headers=header).content       #图片的二进制数据
+        path = title.replace('/', '_')                  #定义文件夹的名字
+        name = path + '(%s)' % n                 #定义图片的名字
+        path_addr = os.path.join('C:\\bizhi', path)
+        isExist = os.path.exists(path_addr)
+        if not isExist:
+            print('创建 %s 文件夹' % path)
+            os.makedirs(path_addr)
+            os.chdir(path_addr)
+        else:
+            pass
+        if os.path.isdir(name+'.jpg'):
+            pass
+        else:
+            with open(name+'.jpg', 'wb') as f:
+                print('Writing %s image ...' % name)
+                f.write(image)
