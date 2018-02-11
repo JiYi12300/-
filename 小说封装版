@@ -59,17 +59,18 @@ class Novel:
             print('创建文件夹: %s' % self.dirname)
             os.makedirs(path)
             os.chdir(path)
-            with open(name+ '.txt', 'w') as f:
-                print('这在写入 %s ' % name)
-                f.write(self.content)
+            self.write()
         else:
             os.chdir(path)
             if os.path.isfile(name+'.txt'):
                 print('跳过 %s' % name)
             else:
-                with open(name+ '.txt', 'w') as f:
-                    print('这在写入 %s ' % name)
-                    f.write(self.content)
+                self.write()
+
+    def write(self):
+        with open(name+ '.txt', 'w') as f:
+            print('这在写入 %s ' % name)
+            f.write(self.content)
 
 novel = Novel()
 novel.theme('http://www.126shu.com/15/')
