@@ -8,7 +8,7 @@ bot = Bot(cache_path=True, console_qr=True)
 items = bot.friends()
 #去除好友名字多余的信息
 pattern = re.compile('<Friend: (.*?)>')
-for item in items():
+for item in items:
     #这里使用了a+(追加模式),如果多次获取,数据会重复
     with open('signature.txt', 'a+', encoding='utf-8') as f:
         # 文件保存到signature.txt里面,可以在open里面更改目录
