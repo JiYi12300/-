@@ -1,0 +1,26 @@
+'''
+1.第一部复制网页的源代码到txt,然后读取源代码
+2.把\\替换为空
+3.re匹配
+4.set() ---> 去重
+'''
+import re
+
+pattern = re.compile('"str":"(.*?)"')
+
+with open(r'C:\Users\JOIE LE\Desktop\新建文本文档.txt') as f:
+    content = set(pattern.findall(f.read().replace('\\', '')))
+    with open('content.txt', 'a', encoding='utf8') as f:
+        # f.write(str(content))
+        for item in content:
+            f.write(item + '\r\n')
+
+
+with open('content.txt', encoding='utf8') as f:
+    x = [item for item in f.readlines() if len(item.strip()) != 36 and item != '\n']
+    for item in x:
+        with open('parse.txt', 'a', encoding='utf8') as y:
+            y.write(item)
+            print(item)
+            # if len(item.strip()) == 36:
+                    # print(item)
