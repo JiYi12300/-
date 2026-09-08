@@ -316,7 +316,7 @@
   NSMutableArray* queryItems = [NSMutableArray array];
   NSCharacterSet* allowed = [NSCharacterSet
       characterSetWithCharactersInString:@"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghij"
-                                     @"klmnopqrstuvwxyz0123456789-._~"];
+                                         @"klmnopqrstuvwxyz0123456789-._~"];
   for (NSString* key in params) {
     NSString* encoded = [(NSString*)params[key]
         stringByAddingPercentEncodingWithAllowedCharacters:allowed];
@@ -396,11 +396,11 @@
                                    corpsecret:(NSString*)corpsecret {
   NSCharacterSet* allowed = [NSCharacterSet
       characterSetWithCharactersInString:@"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghij"
-                                     @"klmnopqrstuvwxyz0123456789-._~"];
+                                         @"klmnopqrstuvwxyz0123456789-._~"];
   NSString* encodedToken = [(token ?: @"")
       stringByAddingPercentEncodingWithAllowedCharacters:allowed];
-  NSPushRequest* request =
-      [NSPushRequest requestWithURLString:[[PUSHER_SERVICE_WECHAT_URL
+  NSPushRequest* request = [NSPushRequest
+      requestWithURLString:[[PUSHER_SERVICE_WECHAT_URL
           stringByReplacingOccurrencesOfString:@"REPLACE_DYNAMIC_KEY"
                                     withString:encodedToken] copy]
                    headers:nil
