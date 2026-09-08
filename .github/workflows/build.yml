@@ -48,7 +48,7 @@ jobs:
 
       - name: Theos Setup (Setup)
         uses: NyaMisty/theos-action@master
-        with: 
+        with:
           theos-src: https://github.com/roothide/theos
 
       - name: Prepare AltList
