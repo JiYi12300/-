@@ -11,7 +11,9 @@
 			<key>label</key>
 			<string>Endpoint</string>
 			<key>footerText</key>
-			<string>GET/HEAD send the data in the query string. Other methods send the data in the request body; choose JSON or Form (application/x-www-form-urlencoded).</string>
+			<string>GET/HEAD send the data in the query string. Other methods send the data in the request body; choose JSON or Form (application/x-www-form-urlencoded).
+
+Params Template (optional): define a custom request body instead of sending all fields. Placeholders are replaced with the notification data: [title] title, [sub] subtitle, [msg] message, [date] date, [app] app name, [appid] bundle ID, [device] device name, [key] auth value, [icon] base64 icon, [image] base64 image. Values are escaped automatically. JSON example: {"content": "[msg]"} — Form example: content=[msg]. Leave empty to send all fields.</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -96,6 +98,24 @@
 				<string>json</string>
 				<string>form</string>
 			</array>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSEditTextCell</string>
+			<key>detail</key>
+			<string>PSDetailController</string>
+			<key>defaults</key>
+			<string>com.noahsaso.pusher</string>
+			<key>PostNotification</key>
+			<string>com.noahsaso.pusher/prefs</string>
+			<key>key</key>
+			<string>paramsTemplate</string>
+			<key>service</key>
+			<string>HTTP</string>
+			<key>label</key>
+			<string>Params Template:</string>
+			<key>noAutoCorrect</key>
+			<true/>
 		</dict>
 
 		<!-- Authentication -->
