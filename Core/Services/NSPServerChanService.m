@@ -34,7 +34,9 @@
   }
 
   NSString* title = context.title ?: @"";
-  NSString* subtitle = context.subtitle ?: @"";
+  // NSPBulletinContext exposes title/message directly; the subtitle lives on
+  // the underlying BBBulletin (same access pattern as NSPFeishuService).
+  NSString* subtitle = context.bulletin.subtitle ?: @"";
   NSString* message = context.message ?: @"";
   // desp is a markdown body; the title goes in the separate title field, so
   // only prepend the subtitle (as bold text) when the notification has one.
