@@ -127,6 +127,11 @@ Bot Webhook: sends through a group chat robot. Copy the key parameter from the r
 "Maximum Image Width (pixels)" = "图片最大宽度（像素）";
 "Maximum Image Height (pixels)" = "图片最大高度（像素）";
 "Image Shrink Factor Upon Retry" = "重试时图片缩小因子";
+"Params Template:" = "参数模板：";
+"GET/HEAD send the data in the query string. Other methods send the data in the request body; choose JSON or Form (application/x-www-form-urlencoded).\n\nParams Template (optional): define a custom request body instead of sending all fields. Placeholders are replaced with the notification data: [title] title, [sub] subtitle, [msg] message, [date] date, [app] app name, [appid] bundle ID, [device] device name, [key] auth value, [icon] base64 icon, [image] base64 image. Values are escaped automatically. JSON example: {\"content\": \"[msg]\"} — Form example: content=[msg]. Leave empty to send all fields." = "GET/HEAD 会把数据放在查询字符串中；其他方法会把数据放在请求体中，可选择 JSON 或 Form（application/x-www-form-urlencoded）。\n\n参数模板（可选）：自定义请求体，代替发送全部字段。占位符会被替换为通知数据：[title] 标题、[sub] 副标题、[msg] 消息、[date] 日期、[app] 应用名、[appid] Bundle ID、[device] 设备名、[key] 鉴权值、[icon] Base64 图标、[image] Base64 图片。值会自动转义。JSON 示例：{\"content\": \"[msg]\"}；Form 示例：content=[msg]。留空则发送全部字段。";
+"ServerChan" = "Server酱";
+"Send Key:" = "Send Key：";
+"Enter the Send Key from sct.ftqq.com. The notification title is sent as the message title; the message body is sent as markdown content." = "输入 sct.ftqq.com 获取的 Send Key。通知标题会作为消息标题发送，消息正文会作为 Markdown 内容发送。";
 "Send Test Notification" = "发送测试通知";
 "%@ (%d total)" = "%@（共 %d 个）";
 "Rename %@" = "重命名 %@";
