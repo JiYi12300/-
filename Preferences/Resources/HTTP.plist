@@ -217,9 +217,9 @@
 			<key>service</key>
 			<string>HTTP</string>
 			<key>useSearchBar</key>
-			<true />
+			<true/>
 			<key>alphabeticIndexingEnabled</key>
-			<true />
+			<true/>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -232,6 +232,16 @@
 			<string>NSPCustomizeAppsController</string>
 			<key>service</key>
 			<string>HTTP</string>
+			<key>defaultIncludeIconKey</key>
+			<string>includeIcon</string>
+			<key>defaultIncludeImageKey</key>
+			<string>includeImage</string>
+			<key>defaultImageMaxWidthKey</key>
+			<string>imageMaxWidth</string>
+			<key>defaultImageMaxHeightKey</key>
+			<string>imageMaxHeight</string>
+			<key>defaultImageShrinkFactorKey</key>
+			<string>imageShrinkFactor</string>
 		</dict>
 
 		<!-- Options -->
@@ -247,97 +257,34 @@ The following properties will be passed to the URL endpoint (via the selected HT
 
 Device Name (deviceName), App Name (appName), App Bundle ID (appID), Title (title), Subtitle (subtitle), Message (message), Date (date), Base64 Encoded PNG Icon 58x58 (icon), Base64 Encoded Image (image)</string>
 		</dict>
-		<dict>
-			<key>cell</key>
-			<string>PSSwitchCell</string>
-			<key>default</key>
-			<false/>
-			<key>defaults</key>
-			<string>com.noahsaso.pusher</string>
-			<key>PostNotification</key>
-			<string>com.noahsaso.pusher/prefs</string>
-			<key>key</key>
-			<string>includeIcon</string>
-			<key>service</key>
-			<string>HTTP</string>
-			<key>label</key>
-			<string>Include Icon</string>
-		</dict>
-		<dict>
-			<key>cell</key>
-			<string>PSSwitchCell</string>
-			<key>default</key>
-			<false/>
-			<key>defaults</key>
-			<string>com.noahsaso.pusher</string>
-			<key>PostNotification</key>
-			<string>com.noahsaso.pusher/prefs</string>
-			<key>key</key>
-			<string>includeImage</string>
-			<key>service</key>
-			<string>HTTP</string>
-			<key>label</key>
-			<string>Include Image</string>
-		</dict>
-		<dict>
-			<key>cell</key>
-			<string>PSEditTextCell</string>
-			<key>detail</key>
-			<string>PSDetailController</string>
-			<key>defaults</key>
-			<string>com.noahsaso.pusher</string>
-			<key>PostNotification</key>
-			<string>com.noahsaso.pusher/prefs</string>
-			<key>key</key>
-			<string>imageMaxWidth</string>
-			<key>service</key>
-			<string>HTTP</string>
-			<key>label</key>
-			<string>Maximum Image Width (pixels)</string>
-			<key>isNumeric</key>
-			<true/>
-		</dict>
-		<dict>
-			<key>cell</key>
-			<string>PSEditTextCell</string>
-			<key>detail</key>
-			<string>PSDetailController</string>
-			<key>defaults</key>
-			<string>com.noahsaso.pusher</string>
-			<key>PostNotification</key>
-			<string>com.noahsaso.pusher/prefs</string>
-			<key>key</key>
-			<string>imageMaxHeight</string>
-			<key>service</key>
-			<string>HTTP</string>
-			<key>label</key>
-			<string>Maximum Image Height (pixels)</string>
-			<key>isNumeric</key>
-			<true/>
-		</dict>
-		<dict>
-			<key>cell</key>
-			<string>PSEditTextCell</string>
-			<key>detail</key>
-			<string>PSDetailController</string>
-			<key>defaults</key>
-			<string>com.noahsaso.pusher</string>
-			<key>PostNotification</key>
-			<string>com.noahsaso.pusher/prefs</string>
-			<key>key</key>
-			<string>imageShrinkFactor</string>
-			<key>service</key>
-			<string>HTTP</string>
-			<key>label</key>
-			<string>Image Shrink Factor Upon Retry</string>
-			<key>isNumeric</key>
-			<true/>
-		</dict>
+
+		<!-- Date Format -->
 		<dict>
 			<key>cell</key>
 			<string>PSGroupCell</string>
+			<key>footerText</key>
+			<string>INSTRUCTIONS:
+1. Click 'Open Date Format Instructions' above (https://nsdateformatter.com).
+2. Using the reference and examples, create your desired date format and enter it above. If you don't care about the date, you may leave it as the default
+
+Example formats for Saturday, April 13, 2019 @ 3:12 AM:
+EEEE, MMM d, yyyy = Saturday, Apr 13, 2019
+MM/dd/yyyy = 04/13/2019
+MM-dd-yyyy HH:mm = 04-13-2019 03:12
+MMM d, h:mm a = Apr 13, 3:12 AM
+E, d MMM yyyy HH:mm:ss Z = Sat, 13 Apr 2019 03:12:11 +0000
+yyyy-MM-dd'T'HH:mm:ssZ = 2019-04-13T03:12:11+0000
+dd.MM.yy = 13.04.19
+HH:mm:ss.SSS = 03:12:11.678
+</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSButtonCell</string>
 			<key>label</key>
-			<string>Date Format</string>
+			<string>Open Date Format Instructions</string>
+			<key>action</key>
+			<string>openDateFormatInstructions</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -355,16 +302,6 @@ Device Name (deviceName), App Name (appName), App Bundle ID (appID), Title (titl
 			<key>label</key>
 			<string>Date Format:</string>
 			<key>noAutoCorrect</key>
-			<true/>
-		</dict>
-		<dict>
-			<key>cell</key>
-			<string>PSLinkCell</string>
-			<key>label</key>
-			<string>Open Date Format Instructions</string>
-			<key>action</key>
-			<string>https://nsdateformatter.com</string>
-			<key>isURL</key>
 			<true/>
 		</dict>
 	</array>
