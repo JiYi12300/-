@@ -198,17 +198,20 @@ static NSDictionary* NSPushHTTPParseHeaders(NSString* headersString) {
     imageString = imageValue;
   }
 
+  // NOTE: Every value MUST be non-nil. A dictionary literal @{key: nil} throws
+  // NSInvalidArgumentException -> crash -> safe mode. Fields like [icon] are
+  // absent from infoDict when Include Icon is off, so coalesce to @"".
   NSDictionary* placeholders = @{
-    @"[title]" : infoDict[@"title"],
-    @"[sub]" : infoDict[@"subtitle"],
-    @"[msg]" : infoDict[@"message"],
-    @"[date]" : infoDict[@"date"],
-    @"[app]" : infoDict[@"appName"],
-    @"[appid]" : infoDict[@"appID"],
-    @"[device]" : infoDict[@"deviceName"],
-    @"[icon]" : infoDict[@"icon"],
+    @"[title]" : infoDict[@"title"] ?: @"",
+    @"[sub]" : infoDict[@"subtitle"] ?: @"",
+    @"[msg]" : infoDict[@"message"] ?: @"",
+    @"[date]" : infoDict[@"date"] ?: @"",
+    @"[app]" : infoDict[@"appName"] ?: @"",
+    @"[appid]" : infoDict[@"appID"] ?: @"",
+    @"[device]" : infoDict[@"deviceName"] ?: @"",
+    @"[icon]" : infoDict[@"icon"] ?: @"",
     @"[image]" : imageString,
-    @"[key]" : authKey,
+    @"[key]" : authKey ?: @"",
     @"[timestamp]" : @(timestamp),
     @"[sign]" : sign ?: @""
   };
