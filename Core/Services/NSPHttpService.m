@@ -322,7 +322,7 @@ static NSDictionary* NSPushHTTPParseHeaders(NSString* headersString) {
   NSString* method =
       [XStrDefault(config.rawPrefs[@"method"], @"POST") uppercaseString];
   BOOL isGet = [method isEqualToString:@"GET"];
-  NSString* template = XStrDefault(config.rawPrefs[@"paramsTemplate"], @""];
+  NSString* template = XStrDefault(config.rawPrefs[@"paramsTemplate"], @"");
 
   NSPushRequest* request =
       [NSPushRequest requestWithURLString:urlString
