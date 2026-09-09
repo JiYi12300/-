@@ -67,11 +67,11 @@ static NSString* NSPushHTTPSign(NSString* secret, long long timestamp) {
     return @"";
   }
   NSString* stringToSign = [NSString stringWithFormat:@"%lld\n%@", timestamp, secret];
-  const char* keyBytes = [secret UTF8String];
-  const char* dataBytes = [stringToSign UTF8String];
+  NSData* keyData = [secret dataUsingEncoding:NSUTF8StringEncoding];
+  NSData* signData = [stringToSign dataUsingEncoding:NSUTF8StringEncoding];
   unsigned char hmac[CC_SHA256_DIGEST_LENGTH];
-  CCHmac(kCCHmacAlgSHA256, keyBytes, strlen(keyBytes), dataBytes,
-         strlen(dataBytes), hmac);
+  CCHmac(kCCHmacAlgSHA256, keyData.bytes, keyData.length, signData.bytes,
+         signData.length, hmac);
   NSData* hmacData = [NSData dataWithBytes:hmac length:sizeof(hmac)];
   NSString* base64 =
       [hmacData base64EncodedStringWithOptions:NSDataBase64EncodingEndLineWithLineFeed];
