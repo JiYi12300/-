@@ -240,12 +240,16 @@ static NSString* retryKeyForBulletinAndService(BBBulletin* bulletin,
                                       object:pushRequest.rawBodyString];
       requestData =
           [pushRequest.rawBodyString dataUsingEncoding:NSUTF8StringEncoding];
-      if (isFormBody) {
-        [request setValue:@"application/x-www-form-urlencoded; charset=utf-8"
-            forHTTPHeaderField:@"Content-Type"];
-      } else {
-        [request setValue:@"application/json"
-            forHTTPHeaderField:@"Content-Type"];
+      // Honor a user-supplied Content-Type (e.g. text/plain from the HTTP
+      // service's custom headers); only set the default when absent.
+      if (![request valueForHTTPHeaderField:@"Content-Type"]) {
+        if (isFormBody) {
+          [request setValue:@"application/x-www-form-urlencoded; charset=utf-8"
+              forHTTPHeaderField:@"Content-Type"];
+        } else {
+          [request setValue:@"application/json"
+              forHTTPHeaderField:@"Content-Type"];
+        }
       }
     } else {
       // Services provide a sanitized log body via logInfoDict. The sender only

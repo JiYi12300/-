@@ -4,34 +4,12 @@
 <dict>
 	<key>items</key>
 	<array>
-		<!-- Endpoint -->
+		<!-- Webhook settings (mirrors SmsForwarder's WebhookFragment layout) -->
 		<dict>
 			<key>cell</key>
 			<string>PSGroupCell</string>
 			<key>label</key>
-			<string>Endpoint</string>
-			<key>footerText</key>
-			<string>GET/HEAD send the data in the query string. Other methods send the data in the request body; choose JSON or Form (application/x-www-form-urlencoded).
-
-Params Template (optional): define a custom request body instead of sending all fields. Placeholders are replaced with the notification data: [title] title, [sub] subtitle, [msg] message, [date] date, [app] app name, [appid] bundle ID, [device] device name, [key] auth value, [icon] base64 icon, [image] base64 image. Values are escaped automatically. JSON example: {"content": "[msg]"} — Form example: content=[msg]. Leave empty to send all fields.</string>
-		</dict>
-		<dict>
-			<key>cell</key>
-			<string>PSEditTextCell</string>
-			<key>detail</key>
-			<string>PSDetailController</string>
-			<key>defaults</key>
-			<string>com.noahsaso.pusher</string>
-			<key>PostNotification</key>
-			<string>com.noahsaso.pusher/prefs</string>
-			<key>key</key>
-			<string>serverURL</string>
-			<key>service</key>
-			<string>HTTP</string>
-			<key>label</key>
-			<string>URL:</string>
-			<key>noAutoCorrect</key>
-			<true/>
+			<string>Method</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -54,11 +32,6 @@ Params Template (optional): define a custom request body instead of sending all 
 				<string>POST</string>
 				<string>PUT</string>
 				<string>PATCH</string>
-				<string>DELETE</string>
-				<string>HEAD</string>
-				<string>OPTIONS</string>
-				<string>TRACE</string>
-				<string>CONNECT</string>
 			</array>
 			<key>validValues</key>
 			<array>
@@ -66,38 +39,51 @@ Params Template (optional): define a custom request body instead of sending all 
 				<string>POST</string>
 				<string>PUT</string>
 				<string>PATCH</string>
-				<string>DELETE</string>
-				<string>HEAD</string>
-				<string>OPTIONS</string>
-				<string>TRACE</string>
-				<string>CONNECT</string>
 			</array>
 		</dict>
 		<dict>
 			<key>cell</key>
-			<string>PSSegmentCell</string>
-			<key>default</key>
-			<string>json</string>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>Web Server</string>
+			<key>footerText</key>
+			<string>POST/PUT/PATCH send the params (template or default form fields) in the request body; GET appends them to the URL as the query string.
+
+Basic authentication: embed the credentials in the URL, e.g. http://user:password@example.com/path — they are stripped from the URL and sent as an Authorization: Basic header.</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSEditTextCell</string>
+			<key>detail</key>
+			<string>PSDetailController</string>
 			<key>defaults</key>
 			<string>com.noahsaso.pusher</string>
 			<key>PostNotification</key>
 			<string>com.noahsaso.pusher/prefs</string>
-			<key>detail</key>
-			<string>PSListItemsController</string>
 			<key>key</key>
-			<string>bodyType</string>
+			<string>serverURL</string>
 			<key>service</key>
 			<string>HTTP</string>
-			<key>validTitles</key>
-			<array>
-				<string>JSON</string>
-				<string>Form</string>
-			</array>
-			<key>validValues</key>
-			<array>
-				<string>json</string>
-				<string>form</string>
-			</array>
+			<key>label</key>
+			<string>URL:</string>
+			<key>noAutoCorrect</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>Params Template (optional)</string>
+			<key>footerText</key>
+			<string>Leave empty to send the default form fields (title, message, timestamp, sign).
+
+The template format follows the Content-Type header (see Headers below): application/json or a template starting with '{' sends it as a JSON body; text/* sends it as a raw text body; anything else is sent as a form body (k1=v1&amp;k2=v2).
+
+Placeholders are replaced with the notification data: [title] title, [sub] subtitle, [msg] message, [date] date, [app] app name, [appid] bundle ID, [device] device name, [icon] base64 icon, [image] base64 image, [key] auth value, [timestamp] current time in ms, [sign] HmacSHA256 signature. Values are escaped automatically.
+
+JSON example: {"content": "[msg]"}
+Form example: content=[msg]
+GET query example: content=[msg] (a leading '/' makes it a path-style query).</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -113,7 +99,61 @@ Params Template (optional): define a custom request body instead of sending all 
 			<key>service</key>
 			<string>HTTP</string>
 			<key>label</key>
-			<string>Params Template:</string>
+			<string>Template:</string>
+			<key>noAutoCorrect</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>Secret (optional)</string>
+			<key>footerText</key>
+			<string>HmacSHA256 signing secret. When set, [timestamp] and [sign] become available in the template / URL: sign = urlencode(base64(hmac_sha256(timestamp + newline + secret, key = secret))). Sent automatically with the default params when no template is given.</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSEditTextCell</string>
+			<key>detail</key>
+			<string>PSDetailController</string>
+			<key>defaults</key>
+			<string>com.noahsaso.pusher</string>
+			<key>PostNotification</key>
+			<string>com.noahsaso.pusher/prefs</string>
+			<key>key</key>
+			<string>secret</string>
+			<key>service</key>
+			<string>HTTP</string>
+			<key>label</key>
+			<string>Secret:</string>
+			<key>noAutoCorrect</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>Headers</string>
+			<key>footerText</key>
+			<string>One header per entry, separated by semicolons, e.g.: Content-Type: application/json; Token: abc123
+
+Content-Type decides the request body format: application/json -> JSON template body; text/plain (or any text/*) -> raw text body; otherwise -> form body.</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSEditTextCell</string>
+			<key>detail</key>
+			<string>PSDetailController</string>
+			<key>defaults</key>
+			<string>com.noahsaso.pusher</string>
+			<key>PostNotification</key>
+			<string>com.noahsaso.pusher/prefs</string>
+			<key>key</key>
+			<string>headers</string>
+			<key>service</key>
+			<string>HTTP</string>
+			<key>label</key>
+			<string>Headers:</string>
 			<key>noAutoCorrect</key>
 			<true/>
 		</dict>
@@ -273,7 +313,7 @@ Params Template (optional): define a custom request body instead of sending all 
 			<key>footerText</key>
 			<string>The server may reject the request if the data is too large, which is usually a result of the image being high resolution. Pusher will try to forward the notification 5 times, shrinking the image each time by the factor you specify (if the body is too large). If by the last retry the image is too large, it will remove the image but set the "image" property to a 1 to indicate that an image is attached. The image will initially be resized to fit the maximum width and height unless it is already smaller. The image shrink factor must be greater than 1.0 to work since it is division (a factor of 2 means it will divide the image dimensions in half).
 
-The following properties will be passed to the URL endpoint (via the selected HTTP method/body format) specified above (property names in parentheses) [Must Turn on "Include Icon" and "Include Image" switches above in order to get the corresponding properties below]:
+Must Turn on "Include Icon" and "Include Image" switches above in order to get the corresponding properties below:
 
 Device Name (deviceName), App Name (appName), App Bundle ID (appID), Title (title), Subtitle (subtitle), Message (message), Date (date), Base64 Encoded PNG Icon 58x58 (icon), Base64 Encoded Image (image)</string>
 		</dict>
