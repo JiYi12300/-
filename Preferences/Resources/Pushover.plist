@@ -145,7 +145,17 @@
 5. Copy the API Token/Key into the associated field above.
 6. Click 'Open Pushover Dashboard' above (https://pushover.net/dashboard).
 7. Copy 'Your User Key' into the associated field above.
-8. Click 'Receiving Devices' to validate your credentials and load the receiving device list.</string>
+8. Click 'Receiving Devices' to validate your credentials and load the receiving device list.
+
+设置：
+1. 点击上方“创建 Pushover 应用”（https://pushover.net/apps/build）。
+2. 输入名称（如 'Pusher'），其他字段可选。
+3. 阅读条款后勾选同意。
+4. 点击底部 'Create Application'。
+5. 把 API Token/Key 复制到上方对应字段。
+6. 点击上方“打开 Pushover 仪表盘”（https://pushover.net/dashboard）。
+7. 把 'Your User Key' 复制到上方对应字段。
+8. 点击“接收设备”验证凭据并加载接收设备列表。</string>
 		</dict>
 	</array>
 	<key>title</key>

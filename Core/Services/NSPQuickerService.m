@@ -7,10 +7,15 @@
 //   POST https://push.getquicker.cn/to/quicker
 //   JSON body: { toUser (account email), code (push verification code),
 //                toDevice (optional), operation (default "paste"),
-//                action (optional), data (content) }
-// The notification text is pushed as `data`; by default it is pasted into the
-// active window on the target PC (operation = "paste"). Success is reported in
-// the JSON response field isSuccess.
+//                action (optional), data (content template),
+//                wait / maxWaitMs / txt (optional) }
+//
+// The `data` field is a template rendered from the notification:
+//   [title] [sub] [msg] [date] [app] [appid] [device] [key]
+// Placeholders are substituted with the raw notification values; the whole
+// payload is then serialized with NSJSONSerialization, which escapes quotes,
+// backslashes, newlines and any nested-JSON-looking content correctly for the
+// JSON body, so templates may embed JSON text safely.
 @implementation NSPQuickerService
 
 + (void)load {
@@ -34,8 +39,47 @@
     @"code" : XStrDefault(servicePrefs[@"code"], @""),
     @"toDevice" : XStrDefault(servicePrefs[@"toDevice"], @""),
     @"operation" : XStrDefault(servicePrefs[@"operation"], @"paste"),
-    @"action" : XStrDefault(servicePrefs[@"action"], @"")
+    @"action" : XStrDefault(servicePrefs[@"action"], @""),
+    @"data" : XStrDefault(servicePrefs[@"data"], @"[title]\n[msg]"),
+    @"wait" : servicePrefs[@"wait"] ?: @NO,
+    @"maxWaitMs" : XStrDefault(servicePrefs[@"maxWaitMs"], @""),
+    @"txt" : servicePrefs[@"txt"] ?: @NO
   };
+}
+
+// Substitute the notification placeholders with their raw values. Escaping is
+// left to NSJSONSerialization (see the class comment), so raw values can
+// contain quotes / newlines / JSON text without breaking the request body.
++ (NSString*)renderedDataTemplate:(NSString*)templateString
+                          context:(NSPBulletinContext*)context
+                           config:(NSPushServiceConfig*)config {
+  NSDictionary* infoDict =
+      [self baseInfoDictForBulletinContext:context config:config];
+  NSDictionary* placeholders = @{
+    @"[title]" : infoDict[@"title"] ?: @"",
+    @"[sub]" : infoDict[@"subtitle"] ?: @"",
+    @"[msg]" : infoDict[@"message"] ?: @"",
+    @"[date]" : infoDict[@"date"] ?: @"",
+    @"[app]" : infoDict[@"appName"] ?: @"",
+    @"[appid]" : infoDict[@"appID"] ?: @"",
+    @"[device]" : infoDict[@"deviceName"] ?: @"",
+    @"[key]" : XStrDefault(config.rawPrefs[@"key"], @"")
+  };
+  NSString* result = templateString;
+  for (NSString* placeholder in placeholders) {
+    id value = placeholders[placeholder];
+    NSString* string = @"";
+    if ([value isKindOfClass:NSString.class]) {
+      string = (NSString*)value;
+    } else if ([value isKindOfClass:NSNumber.class]) {
+      string = [(NSNumber*)value stringValue];
+    } else if (value) {
+      string = [value description];
+    }
+    result = [result stringByReplacingOccurrencesOfString:placeholder
+                                                withString:string];
+  }
+  return result;
 }
 
 + (NSPushRequest*)requestForBulletinContext:(NSPBulletinContext*)context
@@ -49,12 +93,14 @@
     return nil;
   }
 
-  NSString* title = context.title ?: @"";
-  NSString* message = context.message ?: @"";
-  NSString* data =
-      (title.length > 0 && message.length > 0)
-          ? XStr(@"%@\n%@", title, message)
-          : (title.length > 0 ? title : message);
+  NSString* dataTemplate =
+      XStrDefault(config.rawPrefs[@"data"], @"[title]\n[msg]");
+  if (dataTemplate.length == 0) {
+    dataTemplate = @"[title]\n[msg]";
+  }
+  NSString* data = [self renderedDataTemplate:dataTemplate
+                                      context:context
+                                       config:config];
 
   NSMutableDictionary* payload = [@{
     @"toUser" : toUser,
@@ -69,6 +115,18 @@
   NSString* action = XStrDefault(config.rawPrefs[@"action"], @"");
   if (action.length > 0) {
     payload[@"action"] = action;
+  }
+  // wait / maxWaitMs / txt are documented but optional; only send them when
+  // actually configured to keep the payload minimal.
+  if (NSPushBoolValue(config.rawPrefs[@"wait"])) {
+    payload[@"wait"] = @YES;
+    NSString* maxWaitMs = XStrDefault(config.rawPrefs[@"maxWaitMs"], @"");
+    if (maxWaitMs.length > 0) {
+      payload[@"maxWaitMs"] = @(maxWaitMs.integerValue);
+    }
+  }
+  if (NSPushBoolValue(config.rawPrefs[@"txt"])) {
+    payload[@"txt"] = @YES;
   }
 
   NSData* bodyData = [NSJSONSerialization dataWithJSONObject:payload

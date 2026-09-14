@@ -49,7 +49,11 @@
 			<key>footerText</key>
 			<string>POST/PUT/PATCH send the params (template or default form fields) in the request body; GET appends them to the URL as the query string.
 
-Basic authentication: embed the credentials in the URL, e.g. http://user:password@example.com/path — they are stripped from the URL and sent as an Authorization: Basic header.</string>
+Basic authentication: embed the credentials in the URL, e.g. http://user:password@example.com/path — they are stripped from the URL and sent as an Authorization: Basic header.
+
+POST/PUT/PATCH 将参数（模板或默认表单字段）放入请求体；GET 拼接到 URL 查询字符串。
+
+Basic 认证：把账号密码嵌入 URL，如 http://user:password@example.com/path —— 会自动从 URL 剥离并转为 Authorization: Basic 头发送。</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -119,7 +123,17 @@ Placeholders are replaced with the notification data: [title] title, [sub] subti
 
 JSON example: {"content": "[msg]"}
 Form example: content=[msg]
-GET query example: content=[msg] (a leading '/' makes it a path-style query).</string>
+GET query example: content=[msg] (a leading '/' makes it a path-style query).
+
+留空则发送默认表单字段（title, message, timestamp, sign）。
+
+模板格式由 Content-Type 头决定（见下方 Headers）：application/json 或模板以 { 开头时按 JSON 体发送；text/* 按纯文本体发送；其他按表单体发送（k1=v1&amp;k2=v2）。
+
+占位符会被替换为通知数据：同上（[icon] base64图标、[image] base64图片、[key] 认证值、[timestamp] 当前毫秒时间戳、[sign] HmacSHA256 签名），值会自动转义。
+
+JSON 示例：{"content": "[msg]"}
+表单示例：content=[msg]
+GET 查询示例：content=[msg]（开头加 / 为路径式查询）</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -145,7 +159,9 @@ GET query example: content=[msg] (a leading '/' makes it a path-style query).</s
 			<key>label</key>
 			<string>Secret (optional)</string>
 			<key>footerText</key>
-			<string>HmacSHA256 signing secret. When set, [timestamp] and [sign] become available in the template / URL: sign = urlencode(base64(hmac_sha256(timestamp + newline + secret, key = secret))). Sent automatically with the default params when no template is given.</string>
+			<string>HmacSHA256 signing secret. When set, [timestamp] and [sign] become available in the template / URL: sign = urlencode(base64(hmac_sha256(timestamp + newline + secret, key = secret))). Sent automatically with the default params when no template is given.
+
+HmacSHA256 签名密钥。设置后模板/URL 中可使用 [timestamp] 和 [sign]：sign = urlencode(base64(hmac_sha256(timestamp + 换行 + secret, key = secret)))。未填模板时默认参数也会自动附带签名。</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -173,7 +189,11 @@ GET query example: content=[msg] (a leading '/' makes it a path-style query).</s
 			<key>footerText</key>
 			<string>One header per entry, separated by semicolons, e.g.: Content-Type: application/json; Token: abc123
 
-Content-Type decides the request body format: application/json -> JSON template body; text/plain (or any text/*) -> raw text body; otherwise -> form body.</string>
+Content-Type decides the request body format: application/json -> JSON template body; text/plain (or any text/*) -> raw text body; otherwise -> form body.
+
+每行一个请求头，用分号分隔，例如：Content-Type: application/json; Token: abc123
+
+Content-Type 决定请求体格式：application/json -> JSON 模板体；text/plain（或其他 text/*）-> 纯文本体；否则 -> 表单体。</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -201,7 +221,9 @@ Content-Type decides the request body format: application/json -> JSON template 
 			<key>label</key>
 			<string>Authentication</string>
 			<key>footerText</key>
-			<string>Param/Header Name is used to determine the name of the parameter to pass. For example, header authentication is typically passed through the 'Access-Token' header. If you are using the Request Body option and your API takes a parameter named 'token', you would enter 'token' as the name.</string>
+			<string>Param/Header Name is used to determine the name of the parameter to pass. For example, header authentication is typically passed through the 'Access-Token' header. If you are using the Request Body option and your API takes a parameter named 'token', you would enter 'token' as the name.
+
+Param/Header Name 用于指定要传递的参数名。例如 header 认证通常通过 'Access-Token' 头传递；如果使用请求体认证且接口参数名为 'token'，则此处填 'token'。</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -351,7 +373,12 @@ Content-Type decides the request body format: application/json -> JSON template 
 
 Must Turn on "Include Icon" and "Include Image" switches above in order to get the corresponding properties below:
 
-Device Name (deviceName), App Name (appName), App Bundle ID (appID), Title (title), Subtitle (subtitle), Message (message), Date (date), Base64 Encoded PNG Icon 58x58 (icon), Base64 Encoded Image (image)</string>
+Device Name (deviceName), App Name (appName), App Bundle ID (appID), Title (title), Subtitle (subtitle), Message (message), Date (date), Base64 Encoded PNG Icon 58x58 (icon), Base64 Encoded Image (image)
+
+数据过大时服务器可能拒绝请求（通常是图片分辨率过高）。Pusher 会尝试重试5次，每次按你指定的系数缩小图片；若仍过大则移除图片并标记 image=1 表示有附件。图片会先按最大宽高缩放（本身更小则不缩放）。缩放系数必须大于1.0（2 表示图片尺寸减半）。
+
+以下属性会按所选方式传给 URL 端点（括号内为属性名）[需打开上方的 Include Icon / Include Image 开关才有对应属性]：
+设备名(deviceName)、应用名(appName)、应用Bundle ID(appID)、标题(title)、副标题(subtitle)、内容(message)、日期(date)、Base64 PNG 图标 58x58(icon)、Base64 图片(image)</string>
 		</dict>
 
 		<!-- Date Format -->
@@ -372,7 +399,21 @@ E, d MMM yyyy HH:mm:ss Z = Sat, 13 Apr 2019 03:12:11 +0000
 yyyy-MM-dd'T'HH:mm:ssZ = 2019-04-13T03:12:11+0000
 dd.MM.yy = 13.04.19
 HH:mm:ss.SSS = 03:12:11.678
-</string>
+
+
+说明：
+1. 点击上方“打开日期格式说明”（https://nsdateformatter.com）。
+2. 参照下方示例创建日期格式并填入上方输入框；不关心日期可留空用默认值。
+
+示例格式（2019年4月13日 周六 3:12 AM）：
+EEEE, MMM d, yyyy = Saturday, Apr 13, 2019
+MM/dd/yyyy = 04/13/2019
+MM-dd-yyyy HH:mm = 04-13-2019 03:12
+MMM d, h:mm a = Apr 13, 3:12 AM
+E, d MMM yyyy HH:mm:ss Z = Sat, 13 Apr 2019 03:12:11 +0000
+yyyy-MM-dd'T'HH:mm:ssZ = 2019-04-13T03:12:11+0000
+dd.MM.yy = 13.04.19
+HH:mm:ss.SSS = 03:12:11.678</string>
 		</dict>
 		<dict>
 			<key>cell</key>

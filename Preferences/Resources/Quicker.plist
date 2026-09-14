@@ -11,7 +11,9 @@
 			<key>label</key>
 			<string>Credentials</string>
 			<key>footerText</key>
-			<string>Push to your Quicker PC (V2 API). Enter your Quicker account email and the push code set in the member center. The notification text will be pasted into the active window on the target PC by default.</string>
+			<string>Push to your Quicker PC (V2 API). Enter your Quicker account email and the push code set in the member center (getquicker.net 会员中心设置推送验证码)。
+
+推送到 Quicker 电脑（V2 接口）。填写 Quicker 账号邮箱和会员中心设置的推送验证码。</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -52,6 +54,43 @@
 			<true/>
 		</dict>
 
+		<!-- Data Template -->
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>Data Template</string>
+			<key>footerText</key>
+			<string>Template of the content pushed as `data`. Placeholders are replaced with the notification data: [title] title, [sub] subtitle, [msg] message, [date] date, [app] app name, [appid] bundle ID, [device] device name, [key] auth value. Leave empty for the default [title] + newline + [msg].
+
+请求内容 data 的模板。占位符会被替换为通知数据：同上。留空则默认发送「标题 + 换行 + 内容」。
+
+The whole payload is serialized as JSON: quotes, backslashes, newlines and any JSON-like text in the values are escaped automatically, so the template may safely embed JSON snippets.
+
+整个请求体会按 JSON 转义：引号、反斜杠、换行以及值里嵌套的 JSON 文本都会自动转义，模板中可放心嵌入 JSON 片段。</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSEditTextCell</string>
+			<key>detail</key>
+			<string>PSDetailController</string>
+			<key>defaults</key>
+			<string>com.noahsaso.pusher</string>
+			<key>PostNotification</key>
+			<string>com.noahsaso.pusher/prefs</string>
+			<key>key</key>
+			<string>data</string>
+			<key>service</key>
+			<string>Quicker</string>
+			<key>label</key>
+			<string>Data Template:</string>
+			<key>noAutoCorrect</key>
+			<true/>
+			<key>default</key>
+			<string>[title]
+[msg]</string>
+		</dict>
+
 		<!-- Options -->
 		<dict>
 			<key>cell</key>
@@ -61,7 +100,11 @@
 			<key>footerText</key>
 			<string>Target Device: leave empty to push to the active PC, use * for all PCs, or enter a specific PC name (must be connected).
 
-Operation: paste pastes the text into the active window, copy puts it on the clipboard, action runs a Quicker action (fill its name or ID below), open opens the URL, input simulates typing.</string>
+Operation: paste pastes the text into the active window, copy puts it on the clipboard, action runs a Quicker action (fill its name or ID below), open opens the URL, input simulates typing.
+
+目标设备：留空推送到活动电脑，填 * 推送到所有电脑，或填指定电脑名（需已连接）。
+
+操作类型：paste 把内容粘贴到当前窗口，copy 复制到剪贴板，action 运行动作（需填下面的动作名称或ID），open 打开网址，input 模拟输入。</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -130,6 +173,58 @@ Operation: paste pastes the text into the active window, copy puts it on the cli
 			<string>Action Name/ID (optional):</string>
 			<key>noAutoCorrect</key>
 			<true/>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.noahsaso.pusher</string>
+			<key>PostNotification</key>
+			<string>com.noahsaso.pusher/prefs</string>
+			<key>key</key>
+			<string>wait</string>
+			<key>service</key>
+			<string>Quicker</string>
+			<key>label</key>
+			<string>Wait for Action Result</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSEditTextCell</string>
+			<key>detail</key>
+			<string>PSDetailController</string>
+			<key>defaults</key>
+			<string>com.noahsaso.pusher</string>
+			<key>PostNotification</key>
+			<string>com.noahsaso.pusher/prefs</string>
+			<key>key</key>
+			<string>maxWaitMs</string>
+			<key>service</key>
+			<string>Quicker</string>
+			<key>label</key>
+			<string>Max Wait (ms, optional):</string>
+			<key>noAutoCorrect</key>
+			<true/>
+			<key>isDecimalPad</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.noahsaso.pusher</string>
+			<key>PostNotification</key>
+			<string>com.noahsaso.pusher/prefs</string>
+			<key>key</key>
+			<string>txt</string>
+			<key>service</key>
+			<string>Quicker</string>
+			<key>label</key>
+			<string>Plain Text Result</string>
 		</dict>
 
 		<!-- App List -->

@@ -125,7 +125,18 @@ The "Value1" ingredient is set to the title (which includes app name), "Value2" 
 
 If Curate Request Data is disabled:
 The following properties will be passed to the webhook trigger under the "Value1" ingredient (property names in parentheses) [Must Turn on "Include Icon" switch above in order to get the icon property]:
-Device Name (deviceName), App Name (appName), App Bundle ID (appID), Title (title), Subtitle (subtitle), Message (message), Date (date), Base64 Encoded PNG Icon 58x58 (icon)</string>
+Device Name (deviceName), App Name (appName), App Bundle ID (appID), Title (title), Subtitle (subtitle), Message (message), Date (date), Base64 Encoded PNG Icon 58x58 (icon)
+
+设置：
+1. 点击上方“打开 IFTTT Maker Webhooks 账户”（https://ifttt.com/services/maker_webhooks/settings）。
+2. 如未连接，点击 'Connect'。
+3. 把页面 URL 末尾的 Key（https://maker.ifttt.com/use/YOUR_KEY）复制到上方对应字段。
+4. 在 IFTTT 使用 Maker Webhooks 服务创建 applet 时会要求事件名，把事件名填入上方字段。
+
+Webhook 请求数据：
+开启 Curate Request Data 时：Value1=标题（含应用名），Value2=内容（含副标题），Value3=base64 PNG 58x58 图标（若开启 Include Icon）或日期字符串（若未开启）。
+关闭时：以下属性通过 Value1 传递（括号内为属性名）[需打开 Include Icon 开关才有图标属性]：
+设备名(deviceName)、应用名(appName)、Bundle ID(appID)、标题(title)、副标题(subtitle)、内容(message)、日期(date)、Base64 图标(icon)</string>
 		</dict>
 
 		<!-- Date Format -->
@@ -146,7 +157,21 @@ E, d MMM yyyy HH:mm:ss Z = Sat, 13 Apr 2019 03:12:11 +0000
 yyyy-MM-dd'T'HH:mm:ssZ = 2019-04-13T03:12:11+0000
 dd.MM.yy = 13.04.19
 HH:mm:ss.SSS = 03:12:11.678
-</string>
+
+
+说明：
+1. 点击上方“打开日期格式说明”（https://nsdateformatter.com）。
+2. 参照下方示例创建日期格式并填入上方输入框；不关心日期可留空用默认值。
+
+示例格式（2019年4月13日 周六 3:12 AM）：
+EEEE, MMM d, yyyy = Saturday, Apr 13, 2019
+MM/dd/yyyy = 04/13/2019
+MM-dd-yyyy HH:mm = 04-13-2019 03:12
+MMM d, h:mm a = Apr 13, 3:12 AM
+E, d MMM yyyy HH:mm:ss Z = Sat, 13 Apr 2019 03:12:11 +0000
+yyyy-MM-dd'T'HH:mm:ssZ = 2019-04-13T03:12:11+0000
+dd.MM.yy = 13.04.19
+HH:mm:ss.SSS = 03:12:11.678</string>
 		</dict>
 		<dict>
 			<key>cell</key>

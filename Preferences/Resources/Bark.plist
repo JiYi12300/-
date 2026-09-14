@@ -73,7 +73,9 @@
 			<key>label</key>
 			<string>Options</string>
 			<key>footerText</key>
-			<string>Leave empty to use the official default server.</string>
+			<string>Leave empty to use the official default server.
+
+留空则使用官方默认服务器。</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -177,7 +179,18 @@ TTL: retention time in seconds for archived pushes
 URL: URL to open when the push is tapped
 Action: alert shows an action popup, none makes tapping do nothing
 ID: update the push with the same ID
-Delete: 1 to delete the push with the given ID (requires ID)</string>
+Delete: 1 to delete the push with the given ID (requires ID)
+
+Bark 推送可选参数，留空则不发送该参数。
+Level 等级：critical / active / timeSensitive / passive（默认 active）
+Volume 音量：0-10，仅用于 critical 提醒（默认 5）
+Badge 角标数字；Call：1 重复响铃30秒
+AutoCopy：1 自动复制推送内容；Sound 铃声名
+Image HTTPS 图片URL；Group 通知分组名
+IsArchive：1 保存到推送历史；TTL 归档保留秒数
+URL：点击推送后打开的网址
+Action：显示操作弹窗，none 表示点击无动作
+ID：更新同一 ID 的推送；Delete：1 删除指定 ID 的推送（需填 ID）</string>
 		</dict>
 	</array>
 	<key>title</key>

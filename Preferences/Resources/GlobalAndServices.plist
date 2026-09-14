@@ -87,7 +87,9 @@
 			<key>cell</key>
 			<string>PSGroupCell</string>
 			<key>footerText</key>
-			<string>Only keeps logs for the last 100 notifications.</string>
+			<string>Only keeps logs for the last 100 notifications.
+
+仅保留最近 100 条通知日志。</string>
 		</dict>
 		<dict>
 			<key>cell</key>

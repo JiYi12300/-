@@ -11,7 +11,9 @@
 			<key>label</key>
 			<string>Where to Download</string>
 			<key>footerText</key>
-			<string>Pusher Receiver is a browser extension that displays pushes as desktop notifications.</string>
+			<string>Pusher Receiver is a browser extension that displays pushes as desktop notifications.
+
+Pusher Receiver 是一个浏览器扩展，可把推送显示为桌面通知。</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -41,7 +43,9 @@
 			<key>label</key>
 			<string>Support</string>
 			<key>footerText</key>
-			<string>Huge thanks to @burkybang for the awesome browser extension as well as all of his help with ideas and testing!</string>
+			<string>Huge thanks to @burkybang for the awesome browser extension as well as all of his help with ideas and testing!
+
+非常感谢 @burkybang 开发的浏览器扩展以及他在创意和测试上的所有帮助！</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -173,7 +177,9 @@
 			<key>label</key>
 			<string>Options</string>
 			<key>footerText</key>
-			<string>The server may reject the request if the data is too large, which is usually a result of the image being high resolution. Pusher will try to forward the notification 5 times, shrinking the image each time by the factor you specify. If by the last retry the image is too large, it will remove the image but leave an indication that one is attached so the application may display a placeholder. The image will initially be resized to fit the maximum width and height unless it is already smaller. The image shrink factor must be greater than 1.0 to work since it is division (a factor of 2 means it will divide the image dimensions in half).</string>
+			<string>The server may reject the request if the data is too large, which is usually a result of the image being high resolution. Pusher will try to forward the notification 5 times, shrinking the image each time by the factor you specify. If by the last retry the image is too large, it will remove the image but leave an indication that one is attached so the application may display a placeholder. The image will initially be resized to fit the maximum width and height unless it is already smaller. The image shrink factor must be greater than 1.0 to work since it is division (a factor of 2 means it will divide the image dimensions in half).
+
+数据过大时服务器可能拒绝请求（通常是图片分辨率过高）。Pusher 会重试5次，每次按你指定的系数缩小图片；若仍过大则移除图片但保留标记，让应用显示占位图。图片会先按最大宽高缩放（本身更小则不缩放）。缩放系数必须大于1.0（2 表示图片尺寸减半）。</string>
 		</dict>
 
 		<!-- Date Format -->
@@ -194,7 +200,21 @@ E, d MMM yyyy HH:mm:ss Z = Sat, 13 Apr 2019 03:12:11 +0000
 yyyy-MM-dd'T'HH:mm:ssZ = 2019-04-13T03:12:11+0000
 dd.MM.yy = 13.04.19
 HH:mm:ss.SSS = 03:12:11.678
-</string>
+
+
+说明：
+1. 点击上方“打开日期格式说明”（https://nsdateformatter.com）。
+2. 参照下方示例创建日期格式并填入上方输入框；不关心日期可留空用默认值。
+
+示例格式（2019年4月13日 周六 3:12 AM）：
+EEEE, MMM d, yyyy = Saturday, Apr 13, 2019
+MM/dd/yyyy = 04/13/2019
+MM-dd-yyyy HH:mm = 04-13-2019 03:12
+MMM d, h:mm a = Apr 13, 3:12 AM
+E, d MMM yyyy HH:mm:ss Z = Sat, 13 Apr 2019 03:12:11 +0000
+yyyy-MM-dd'T'HH:mm:ssZ = 2019-04-13T03:12:11+0000
+dd.MM.yy = 13.04.19
+HH:mm:ss.SSS = 03:12:11.678</string>
 		</dict>
 		<dict>
 			<key>cell</key>

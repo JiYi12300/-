@@ -8,7 +8,9 @@
 			<key>cell</key>
 			<string>PSGroupCell</string>
 			<key>footerText</key>
-			<string>Each app has custom notification settings that determine where their notifications are allowed to show (in Settings —> Notifications). This menu allows you to restrict Pusher to only send a notification if the app's notification settings have either all (AND) or at least one (OR) of the selected options below. Selecting AND requires all of the enabled options below to be enabled in the app's settings. Selecting OR requires only one of the enabled options below to be enabled in the app's settings.</string>
+			<string>Each app has custom notification settings that determine where their notifications are allowed to show (in Settings —> Notifications). This menu allows you to restrict Pusher to only send a notification if the app's notification settings have either all (AND) or at least one (OR) of the selected options below. Selecting AND requires all of the enabled options below to be enabled in the app's settings. Selecting OR requires only one of the enabled options below to be enabled in the app's settings.
+
+每个应用都有自定义通知设置（设置 → 通知），决定通知允许显示在哪里。此菜单可限制 Pusher 仅在应用通知设置满足下方所有（AND）或至少一个（OR）选项时才推送。AND 要求应用设置里所有已开启选项都开启；OR 只要求其中一个开启。</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -39,7 +41,9 @@
 			<key>cell</key>
 			<string>PSGroupCell</string>
 			<key>footerText</key>
-			<string>When using OR, you will probably want to require that Allow Notifications is enabled in the app's notification settings in addition to other settings. This is because the device saves the rest of the settings (e.g. Lock Screen, Badges, etc.) even when you turn off Allow Notifications in the app's notification settings. For example, if you install a new app and don't allow push notifications, the rest of the settings still default to on. If you select OR, Lock Screen, and Sounds below for example, even the apps that hide all notifications will be sent through Pusher. This fixes that. When this option is on, you will probably want to disable the 'Allow Notifications' switch below. If you are confused, leave this setting on.</string>
+			<string>When using OR, you will probably want to require that Allow Notifications is enabled in the app's notification settings in addition to other settings. This is because the device saves the rest of the settings (e.g. Lock Screen, Badges, etc.) even when you turn off Allow Notifications in the app's notification settings. For example, if you install a new app and don't allow push notifications, the rest of the settings still default to on. If you select OR, Lock Screen, and Sounds below for example, even the apps that hide all notifications will be sent through Pusher. This fixes that. When this option is on, you will probably want to disable the 'Allow Notifications' switch below. If you are confused, leave this setting on.
+
+使用 OR 时，建议同时勾选“允许通知”。因为即使关闭应用的“允许通知”，设备仍会保存其余设置（如锁屏、角标等）为开启。例如新装应用未允许推送时，其余设置仍默认开启；若选 OR 并勾选锁屏、声音等，连完全屏蔽通知的应用也会被转发。开启此选项后，建议关闭下方的 'Allow Notifications' 开关。如有疑问保持开启即可。</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -60,7 +64,9 @@
 			<key>cell</key>
 			<string>PSGroupCell</string>
 			<key>footerText</key>
-			<string>Shows Previews works when it is set to Always or When Unlocked.</string>
+			<string>Shows Previews works when it is set to Always or When Unlocked.
+
+Shows Previews 仅在设置为“始终”或“解锁时”时生效。</string>
 		</dict>
 		<dict>
 			<key>cell</key>

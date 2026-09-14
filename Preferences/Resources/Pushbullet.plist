@@ -113,7 +113,13 @@
 1. Click 'Open Pushbullet Account' above (https://www.pushbullet.com/#settings/account).
 2. Scroll down and click 'Create Access Token' on your account page.
 3. Copy the displayed access token into the associated field above.
-4. Click 'Receiving Devices' to validate your credentials and load the receiving device list.</string>
+4. Click 'Receiving Devices' to validate your credentials and load the receiving device list.
+
+设置：
+1. 点击上方“打开 Pushbullet 账户”（https://www.pushbullet.com/#settings/account）。
+2. 在账户页向下滚动，点击 'Create Access Token'。
+3. 把生成的访问令牌复制到上方对应字段。
+4. 点击“接收设备”验证凭据并加载接收设备列表。</string>
 		</dict>
 	</array>
 	<key>title</key>

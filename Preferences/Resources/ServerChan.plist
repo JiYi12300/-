@@ -11,7 +11,9 @@
 			<key>label</key>
 			<string>Credentials</string>
 			<key>footerText</key>
-			<string>Enter the Send Key from sct.ftqq.com. The notification title is sent as the message title; the message body is sent as markdown content.</string>
+			<string>Enter the Send Key from sct.ftqq.com. The notification title is sent as the message title; the message body is sent as markdown content.
+
+填写 sct.ftqq.com 的 Send Key。通知标题作为消息标题发送，消息内容作为 markdown 内容发送。</string>
 		</dict>
 		<dict>
 			<key>cell</key>

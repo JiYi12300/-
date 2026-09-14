@@ -213,7 +213,11 @@
 			<key>footerText</key>
 			<string>Push Mode selects how messages are delivered:
 App: sends through your self-built app. Fill in Corpid, Corpsecret and AgentID. Use touser to specify message recipients. Separate usernames with "|", like "Tom|Jerry". Default is "@all" for all users. Leave blank for "@all".
-Bot Webhook: sends through a group chat robot. Copy the key parameter from the robot's webhook URL (https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=KEY). Corpid/Corpsecret/AgentID and touser are ignored in this mode.</string>
+Bot Webhook: sends through a group chat robot. Copy the key parameter from the robot's webhook URL (https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=KEY). Corpid/Corpsecret/AgentID and touser are ignored in this mode.
+
+推送模式选择消息发送方式：
+App：通过自建应用发送。填写 Corpid、Corpsecret 和 AgentID，用 touser 指定接收人，多个用户名用 | 分隔，如 "Tom|Jerry"；留空默认为 "@all" 全部用户。
+Bot Webhook：通过群聊机器人发送。从机器人 webhook 地址复制 key 参数（https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=KEY）。此模式忽略 Corpid/Corpsecret/AgentID 和 touser。</string>
 		</dict>
 	</array>
 	<key>title</key>
