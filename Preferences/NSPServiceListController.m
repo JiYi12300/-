@@ -114,10 +114,7 @@
     } else {
       [_data[@"Disabled"] addObject:customService];
     }
-    _serviceImages[customService] =
-        [UIImage imageNamed:XStr(@"CustomService_%@", customService)
-                   inBundle:PUSHER_BUNDLE]
-            ?: _defaultImage;
+    _serviceImages[customService] = [self imageForCustomService:customService];
   }
 
   [_data[@"Enabled"]
@@ -377,17 +374,33 @@
   [_data[@"Disabled"]
       sortUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
 
-  UIImage* defaultImage = _defaultImage;
-  if (!defaultImage || ![defaultImage isKindOfClass:UIImage.class]) {
-    defaultImage = DEFAULT_IMAGE;
-  }
-
-  NSString* imageName = XStr(@"CustomService_%@", serviceName);
-  _serviceImages[serviceName] =
-      [UIImage imageNamed:imageName inBundle:PUSHER_BUNDLE] ?: defaultImage;
+  _serviceImages[serviceName] = [self imageForCustomService:serviceName];
   [_table reloadSections:[NSIndexSet indexSetWithIndex:1]
        withRowAnimation:UITableViewRowAnimationAutomatic];
   [self saveCustomServices];
+}
+
+// Icon for a custom channel: typed channels use the type's built-in icon
+// (BuiltInService_<Type>, e.g. BuiltInService_HTTP), falling back to a
+// channel-specific image (CustomService_<name>) or the default icon.
+- (UIImage*)imageForCustomService:(NSString*)serviceName {
+  UIImage* image = nil;
+  id raw = _customServices[serviceName];
+  NSString* type = [raw isKindOfClass:NSDictionary.class]
+                       ? NSPushStringValue(((NSDictionary*)raw)[@"type"], @"")
+                       : @"";
+  if (type.length > 0) {
+    image = [UIImage imageNamed:XStr(@"BuiltInService_%@", type)
+                       inBundle:PUSHER_BUNDLE];
+  }
+  if (!image) {
+    image = [UIImage imageNamed:XStr(@"CustomService_%@", serviceName)
+                       inBundle:PUSHER_BUNDLE];
+  }
+  if (!image) {
+    image = _defaultImage ?: DEFAULT_IMAGE;
+  }
+  return image;
 }
 
 - (void)saveCustomServices {
