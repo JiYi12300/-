@@ -343,7 +343,7 @@
 - (void)showTypePickerForService:(NSString*)serviceName {
   UIAlertController* alert = XAlertTitle(NSPLocalizedString(@"Channel Type", nil), nil);
   __weak NSPServiceListController* weakSelf = self;
-  id pick = ^(NSString* type) {
+  void (^pick)(NSString*) = ^(NSString* type) {
     NSPServiceListController* handlerSelf = weakSelf;
     [handlerSelf createCustomService:serviceName type:type];
   };
