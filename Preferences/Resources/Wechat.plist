@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>items</key>
+	<array>
+		<!-- Credentials -->
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>Credentials</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSegmentCell</string>
+			<key>default</key>
+			<integer>0</integer>
+			<key>defaults</key>
+			<string>com.noahsaso.pusher</string>
+			<key>PostNotification</key>
+			<string>com.noahsaso.pusher/prefs</string>
+			<key>detail</key>
+			<string>PSListItemsController</string>
+			<key>key</key>
+			<string>pushMode</string>
+			<key>service</key>
+			<string>Wechat</string>
+			<key>label</key>
+			<string>Push Mode:</string>
+			<key>validTitles</key>
+			<array>
+				<string>App</string>
+				<string>Bot Webhook</string>
+			</array>
+			<key>validValues</key>
+			<array>
+				<integer>0</integer>
+				<integer>1</integer>
+			</array>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSEditTextCell</string>
+			<key>detail</key>
+			<string>PSDetailController</string>
+			<key>defaults</key>
+			<string>com.noahsaso.pusher</string>
+			<key>PostNotification</key>
+			<string>com.noahsaso.pusher/prefs</string>
+			<key>key</key>
+			<string>webhookKey</string>
+			<key>service</key>
+			<string>Wechat</string>
+			<key>label</key>
+			<string>Webhook Key:</string>
+			<key>noAutoCorrect</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSegmentCell</string>
+			<key>default</key>
+			<string>text</string>
+			<key>defaults</key>
+			<string>com.noahsaso.pusher</string>
+			<key>PostNotification</key>
+			<string>com.noahsaso.pusher/prefs</string>
+			<key>detail</key>
+			<string>PSListItemsController</string>
+			<key>key</key>
+			<string>botMsgType</string>
+			<key>service</key>
+			<string>Wechat</string>
+			<key>label</key>
+			<string>Bot Message Type:</string>
+			<key>validTitles</key>
+			<array>
+				<string>Text</string>
+				<string>Markdown</string>
+			</array>
+			<key>validValues</key>
+			<array>
+				<string>text</string>
+				<string>markdown</string>
+			</array>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSEditTextCell</string>
+			<key>detail</key>
+			<string>PSDetailController</string>
+			<key>defaults</key>
+			<string>com.noahsaso.pusher</string>
+			<key>PostNotification</key>
+			<string>com.noahsaso.pusher/prefs</string>
+			<key>key</key>
+			<string>corpid</string>
+			<key>service</key>
+			<string>Wechat</string>
+			<key>label</key>
+			<string>Corpid:</string>
+			<key>noAutoCorrect</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSEditTextCell</string>
+			<key>detail</key>
+			<string>PSDetailController</string>
+			<key>defaults</key>
+			<string>com.noahsaso.pusher</string>
+			<key>PostNotification</key>
+			<string>com.noahsaso.pusher/prefs</string>
+			<key>key</key>
+			<string>corpsecret</string>
+			<key>service</key>
+			<string>Wechat</string>
+			<key>label</key>
+			<string>Corpsecret:</string>
+			<key>noAutoCorrect</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSEditTextCell</string>
+			<key>detail</key>
+			<string>PSDetailController</string>
+			<key>defaults</key>
+			<string>com.noahsaso.pusher</string>
+			<key>PostNotification</key>
+			<string>com.noahsaso.pusher/prefs</string>
+			<key>key</key>
+			<string>agentID</string>
+			<key>service</key>
+			<string>Wechat</string>
+			<key>label</key>
+			<string>AgentID:</string>
+			<key>noAutoCorrect</key>
+			<true/>
+		</dict>
+
+		<!-- App List -->
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>Apps</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSegmentCell</string>
+			<key>default</key>
+			<true/>
+			<key>defaults</key>
+			<string>com.noahsaso.pusher</string>
+			<key>PostNotification</key>
+			<string>com.noahsaso.pusher/prefs</string>
+			<key>detail</key>
+			<string>PSListItemsController</string>
+			<key>key</key>
+			<string>appListIsBlacklist</string>
+			<key>service</key>
+			<string>Wechat</string>
+			<key>validTitles</key>
+			<array>
+				<string>Blacklist</string>
+				<string>Whitelist</string>
+			</array>
+			<key>validValues</key>
+			<array>
+				<true/>
+				<false/>
+			</array>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSLinkCell</string>
+			<key>detail</key>
+			<string>NSPAppListController</string>
+			<key>icon</key>
+			<string>app_list</string>
+			<key>label</key>
+			<string>App List</string>
+			<key>service</key>
+			<string>Wechat</string>
+			<key>useSearchBar</key>
+			<true />
+			<key>alphabeticIndexingEnabled</key>
+			<true />
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSLinkCell</string>
+			<key>label</key>
+			<string>App Customization</string>
+			<key>icon</key>
+			<string>app_list</string>
+			<key>detail</key>
+			<string>NSPCustomizeAppsController</string>
+			<key>service</key>
+			<string>Wechat</string>
+			<key>defaultTouserKey</key>
+			<string>touser</string>
+		</dict>
+
+		<!-- Options -->
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>Options</string>
+			<key>footerText</key>
+			<string>Push Mode selects how messages are delivered:
+App: sends through your self-built app. Fill in Corpid, Corpsecret and AgentID. Use touser to specify message recipients. Separate usernames with "|", like "Tom|Jerry". Default is "@all" for all users. Leave blank for "@all".
+Bot Webhook: sends through a group chat robot. Copy the key parameter from the robot's webhook URL (https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=KEY). Corpid/Corpsecret/AgentID and touser are ignored in this mode.</string>
+		</dict>
+	</array>
+	<key>title</key>
+	<string>Wechat</string>
+</dict>
+</plist>

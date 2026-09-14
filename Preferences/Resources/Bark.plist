@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>items</key>
+	<array>
+		<!-- Credentials -->
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>Credentials</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSEditTextCell</string>
+			<key>detail</key>
+			<string>PSDetailController</string>
+			<key>defaults</key>
+			<string>com.noahsaso.pusher</string>
+			<key>PostNotification</key>
+			<string>com.noahsaso.pusher/prefs</string>
+			<key>key</key>
+			<string>key</string>
+			<key>service</key>
+			<string>Bark</string>
+			<key>label</key>
+			<string>Key:</string>
+			<key>noAutoCorrect</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSEditTextCell</string>
+			<key>detail</key>
+			<string>PSDetailController</string>
+			<key>defaults</key>
+			<string>com.noahsaso.pusher</string>
+			<key>PostNotification</key>
+			<string>com.noahsaso.pusher/prefs</string>
+			<key>key</key>
+			<string>key2</string>
+			<key>service</key>
+			<string>Bark</string>
+			<key>label</key>
+			<string>Key 2 (optional):</string>
+			<key>noAutoCorrect</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSEditTextCell</string>
+			<key>detail</key>
+			<string>PSDetailController</string>
+			<key>defaults</key>
+			<string>com.noahsaso.pusher</string>
+			<key>PostNotification</key>
+			<string>com.noahsaso.pusher/prefs</string>
+			<key>key</key>
+			<string>key3</string>
+			<key>service</key>
+			<string>Bark</string>
+			<key>label</key>
+			<string>Key 3 (optional):</string>
+			<key>noAutoCorrect</key>
+			<true/>
+		</dict>
+
+		<!-- Options -->
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>Options</string>
+			<key>footerText</key>
+			<string>Leave empty to use the official default server.</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSEditTextCell</string>
+			<key>detail</key>
+			<string>PSDetailController</string>
+			<key>defaults</key>
+			<string>com.noahsaso.pusher</string>
+			<key>PostNotification</key>
+			<string>com.noahsaso.pusher/prefs</string>
+			<key>key</key>
+			<string>serverURL</string>
+			<key>service</key>
+			<string>Bark</string>
+			<key>label</key>
+			<string>Server URL:</string>
+			<key>noAutoCorrect</key>
+			<true/>
+		</dict>
+
+		<!-- App List -->
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>Apps</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSegmentCell</string>
+			<key>default</key>
+			<true/>
+			<key>defaults</key>
+			<string>com.noahsaso.pusher</string>
+			<key>PostNotification</key>
+			<string>com.noahsaso.pusher/prefs</string>
+			<key>detail</key>
+			<string>PSListItemsController</string>
+			<key>key</key>
+			<string>appListIsBlacklist</string>
+			<key>service</key>
+			<string>Bark</string>
+			<key>validTitles</key>
+			<array>
+				<string>Blacklist</string>
+				<string>Whitelist</string>
+			</array>
+			<key>validValues</key>
+			<array>
+				<true/>
+				<false/>
+			</array>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSLinkCell</string>
+			<key>detail</key>
+			<string>NSPAppListController</string>
+			<key>icon</key>
+			<string>app_list</string>
+			<key>label</key>
+			<string>App List</string>
+			<key>service</key>
+			<string>Bark</string>
+			<key>useSearchBar</key>
+			<true/>
+			<key>alphabeticIndexingEnabled</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSLinkCell</string>
+			<key>label</key>
+			<string>App Customization</string>
+			<key>icon</key>
+			<string>app_list</string>
+			<key>detail</key>
+			<string>NSPCustomizeAppsController</string>
+			<key>service</key>
+			<string>Bark</string>
+		</dict>
+
+		<!-- Optional Parameters -->
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>Optional Parameters</string>
+			<key>footerText</key>
+			<string>Optional Bark push parameters. Leave empty to not send that parameter.
+Level: critical / active / timeSensitive / passive (default active)
+Volume: 0-10, only for critical alerts (default 5)
+Badge: badge number
+Call: 1 to repeat the ringtone for 30 seconds
+AutoCopy: 1 to auto-copy push content
+Sound: ringtone name
+Image: HTTPS image URL
+Group: group name to group notifications
+IsArchive: 1 to save the push to history
+TTL: retention time in seconds for archived pushes
+URL: URL to open when the push is tapped
+Action: alert shows an action popup, none makes tapping do nothing
+ID: update the push with the same ID
+Delete: 1 to delete the push with the given ID (requires ID)</string>
+		</dict>
+	</array>
+	<key>title</key>
+	<string>Bark</string>
+</dict>
+</plist>
