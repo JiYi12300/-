@@ -181,8 +181,13 @@
   if (!serviceConfig) {
     return;
   }
+  // Typed custom channels carry their channel type in rawPrefs; resolve the
+  // request builder from that type (HTTP/Bark/...) instead of the instance
+  // name, which is not a registered service.
+  NSString* channelType = XStrDefault(serviceConfig.rawPrefs[@"type"], @"");
   Class<NSPPushService> serviceClass =
-      (Class<NSPPushService>)[NSPushServiceManager serviceClassForName:service];
+      (Class<NSPPushService>)[NSPushServiceManager
+          serviceClassForName:(channelType.length > 0 ? channelType : service)];
 
   NSPushServiceConfig* effectiveConfig = serviceConfig;
   if (!isTest) {

@@ -100,6 +100,31 @@ static NSArray* getSNSKeys(NSDictionary* prefs, NSString* prefix,
     servicePrefs[@"key"] = NSPushStringValue(servicePrefs[@"key"], @"");
     servicePrefs[@"paramName"] =
         NSPushStringValue(servicePrefs[@"paramName"], @"");
+    // Typed custom channels: the instance carries a channel type (one of the
+    // built-in service names). Load that type's defaults and build the URL with
+    // its template, so the type's request builder can consume this config
+    // exactly like a built-in service (NSPusher resolves the class by type).
+    NSString* channelType = NSPushStringValue(customService[@"type"], @"");
+    if (channelType.length > 0 &&
+        [BUILTIN_PUSHER_SERVICES containsObject:channelType]) {
+      servicePrefs[@"type"] = channelType;
+      Class<NSPPushService> serviceClass =
+          (Class<NSPPushService>)[NSPushServiceManager
+              serviceClassForName:channelType];
+      NSString* eventName =
+          NSPushStringValue(customService[@"eventName"], @"");
+      NSString* dbName = [[NSPushStringValue(customService[@"dbName"], @"")
+          stringByTrimmingCharactersInSet:
+              [NSCharacterSet whitespaceAndNewlineCharacterSet]] copy];
+      NSString* serverURL =
+          NSPushStringValue(customService[@"serverURL"], @"");
+      servicePrefs[@"url"] = [serviceClass urlForEventName:eventName
+                                                    dbName:dbName
+                                                 serverURL:serverURL];
+      [servicePrefs addEntriesFromDictionary:
+           [serviceClass extraPrefsForName:service
+                               servicePrefs:customService]];
+    }
     servicePrefs[@"appListIsBlacklist"] =
         @(NSPushBoolResolved(servicePrefs[@"appListIsBlacklist"], YES));
     servicePrefs[@"appList"] =

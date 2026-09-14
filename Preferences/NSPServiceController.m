@@ -4,6 +4,7 @@
 #import "NSPSharedSpecifiers.h"
 #import "NSPSharedSpecifiers+ServiceBuilders.h"
 #import "NSPusherManager.h"
+#import "../Shared/NSPushPrefsStore.h"
 #import "../global.h"
 #import "../helpers.h"
 #import <notify.h>
@@ -88,9 +89,39 @@
     NSArray* specialCells = @[ @(PSGroupCell), @(PSButtonCell), @(PSLinkCell) ];
 
     if (_isCustom) {
-      allSpecifiers = [[NSPSharedSpecifiers getCustom:_service
-                                                  ref:self] mutableCopy];
-      sharedSpecifiers = [NSPSharedSpecifiers getCustomShared:_service];
+      // Custom channels may carry a channel type (HTTP/Bark/...); when they do,
+      // the config form is the type's own plist, but prefs still go to this
+      // instance's storage (CustomServices[service]), so several channels of
+      // the same type coexist with independent configs.
+      NSDictionary* customServicePrefs =
+          [NSPushPrefsStore serviceForName:_service isCustomService:YES];
+      NSString* channelType =
+          NSPushStringValue(customServicePrefs[@"type"], @"");
+      NSArray* typedSpecifiers = nil;
+      if (channelType.length > 0) {
+        typedSpecifiers = [NSPSharedSpecifiers getTypedCustom:_service
+                                                         type:channelType
+                                                          ref:self];
+      }
+      if (typedSpecifiers.count > 0) {
+        allSpecifiers = [typedSpecifiers mutableCopy];
+        // The type's shared specifiers (Bark Level/Volume/..., HTTP Include
+        // Icon/Image/...) hardcode built-in routing; re-route them to this
+        // instance's custom storage so each channel keeps its own values.
+        sharedSpecifiers = [NSPSharedSpecifiers get:channelType];
+        for (PSSpecifier* specifier in sharedSpecifiers) {
+          [specifier setProperty:_service forKey:@"service"];
+          [specifier setProperty:@NO forKey:@"isCustomApp"];
+          specifier->setter =
+              @selector(setPreferenceValue:forCustomSpecifier:);
+          specifier->getter = @selector(readCustomPreferenceValue:);
+          specifier.target = NSPSharedSpecifiers.class;
+        }
+      } else {
+        allSpecifiers = [[NSPSharedSpecifiers getCustom:_service
+                                                    ref:self] mutableCopy];
+        sharedSpecifiers = [NSPSharedSpecifiers getCustomShared:_service];
+      }
     } else {
       allSpecifiers = [[self loadSpecifiersFromPlistName:_service
                                                   target:self] mutableCopy];

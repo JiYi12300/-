@@ -8,6 +8,9 @@
     isCustomService:(BOOL)isCustomService;
 + (NSArray*)get:(NSString*)service;
 + (NSArray*)getCustom:(NSString*)service ref:(PSListController*)listController;
++ (NSArray*)getTypedCustom:(NSString*)service
+                      type:(NSString*)type
+                       ref:(PSListController*)listController;
 + (void)setPreferenceValue:(id)value
     forBuiltInServiceSpecifier:(PSSpecifier*)specifier;
 + (id)readBuiltInServicePreferenceValue:(PSSpecifier*)specifier;

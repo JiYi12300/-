@@ -23,8 +23,8 @@
   }
   _table = [[UITableView alloc] initWithFrame:tableFrame
                                         style:UITableViewStyleGrouped];
-  [_table registerClass:UITableViewCell.class
-      forCellReuseIdentifier:@"ServiceCell"];
+  // Created manually in cellForRowAtIndexPath with Subtitle style so typed
+  // custom channels can show their channel type as a subtitle.
   _table.dataSource = self;
   _table.delegate = self;
   _table.allowsSelectionDuringEditing = YES;
@@ -329,25 +329,65 @@
       XLog(@"newServiceName already exists");
       return;
     }
-    strongSelf->_customServices[newServiceName] = [@{@"Enabled" : @NO} mutableCopy];
-    [strongSelf->_data[@"Disabled"] addObject:newServiceName];
-    [strongSelf->_data[@"Disabled"]
-        sortUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
-
-    UIImage* defaultImage = strongSelf->_defaultImage;
-    if (!defaultImage || ![defaultImage isKindOfClass:UIImage.class]) {
-      defaultImage = DEFAULT_IMAGE;
-    }
-
-    NSString* imageName = XStr(@"CustomService_%@", newServiceName);
-    strongSelf->_serviceImages[newServiceName] =
-        [UIImage imageNamed:imageName inBundle:PUSHER_BUNDLE] ?: defaultImage;
-    [strongSelf->_table reloadSections:[NSIndexSet indexSetWithIndex:1]
-                    withRowAnimation:UITableViewRowAnimationAutomatic];
-    [strongSelf saveCustomServices];
+    // Ask which channel type this instance should use, then create it.
+    [strongSelf showTypePickerForService:newServiceName];
   };
   [alert addAction:XAlertBtnHandler(NSPLocalizedString(@"Add", nil), handler)];
   [self presentViewController:alert animated:YES completion:nil];
+}
+
+// Channel type picker shown after the user enters a new channel name. Lists
+// every built-in service type plus a generic (type-less) custom channel, so
+// the same type (HTTP/Bark/...) can be created more than once with fully
+// independent configs, mirroring SmsForwarder's channel list.
+- (void)showTypePickerForService:(NSString*)serviceName {
+  UIAlertController* alert = XAlertTitle(NSPLocalizedString(@"Channel Type", nil), nil);
+  __weak NSPServiceListController* weakSelf = self;
+  id pick = ^(NSString* type) {
+    NSPServiceListController* handlerSelf = weakSelf;
+    [handlerSelf createCustomService:serviceName type:type];
+  };
+  [alert addAction:[UIAlertAction
+                       actionWithTitle:NSPLocalizedString(@"Generic Custom", nil)
+                                 style:UIAlertActionStyleDefault
+                               handler:^(UIAlertAction* action) {
+                                 pick(nil);
+                               }]];
+  for (NSString* type in BUILTIN_PUSHER_SERVICES) {
+    [alert addAction:[UIAlertAction
+                         actionWithTitle:NSPushServiceDisplayName(type)
+                                   style:UIAlertActionStyleDefault
+                                 handler:^(UIAlertAction* action) {
+                                   pick(type);
+                                 }]];
+  }
+  [alert addAction:[UIAlertAction actionWithTitle:NSPLocalizedString(@"Cancel", nil)
+                                            style:UIAlertActionStyleCancel
+                                          handler:nil]];
+  [self presentViewController:alert animated:YES completion:nil];
+}
+
+- (void)createCustomService:(NSString*)serviceName type:(NSString*)type {
+  NSMutableDictionary* serviceObj = [@{@"Enabled" : @NO} mutableCopy];
+  if (type.length > 0) {
+    serviceObj[@"type"] = type;
+  }
+  _customServices[serviceName] = serviceObj;
+  [_data[@"Disabled"] addObject:serviceName];
+  [_data[@"Disabled"]
+      sortUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+
+  UIImage* defaultImage = _defaultImage;
+  if (!defaultImage || ![defaultImage isKindOfClass:UIImage.class]) {
+    defaultImage = DEFAULT_IMAGE;
+  }
+
+  NSString* imageName = XStr(@"CustomService_%@", serviceName);
+  _serviceImages[serviceName] =
+      [UIImage imageNamed:imageName inBundle:PUSHER_BUNDLE] ?: defaultImage;
+  [_table reloadSections:[NSIndexSet indexSetWithIndex:1]
+       withRowAnimation:UITableViewRowAnimationAutomatic];
+  [self saveCustomServices];
 }
 
 - (void)saveCustomServices {
@@ -404,12 +444,25 @@
 - (UITableViewCell*)tableView:(UITableView*)table
         cellForRowAtIndexPath:(NSIndexPath*)indexPath {
   UITableViewCell* cell =
-      [table dequeueReusableCellWithIdentifier:@"ServiceCell"
-                                  forIndexPath:indexPath];
+      [table dequeueReusableCellWithIdentifier:@"ServiceCell"];
+  if (!cell) {
+    cell = [[UITableViewCell alloc]
+        initWithStyle:UITableViewCellStyleSubtitle
+      reuseIdentifier:@"ServiceCell"];
+  }
   NSString* service = _data[_sections[indexPath.section]][indexPath.row];
   cell.textLabel.text = NSPushServiceDisplayName(service);
   cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
   cell.imageView.image = _serviceImages[service];
+  // Typed custom channels show their channel type (e.g. "HTTP") as a subtitle,
+  // mirroring SmsForwarder's channel list.
+  id rawCustomService = _customServices[service];
+  NSString* channelType =
+      [rawCustomService isKindOfClass:NSDictionary.class]
+          ? NSPushStringValue(((NSDictionary*)rawCustomService)[@"type"], @"")
+          : @"";
+  cell.detailTextLabel.text =
+      channelType.length > 0 ? NSPushServiceDisplayName(channelType) : @"";
   return cell;
 }
 

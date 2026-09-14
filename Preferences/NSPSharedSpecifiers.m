@@ -82,6 +82,48 @@
   return specifiers;
 }
 
+// Typed custom channels: load the config form of a built-in service type
+// (HTTP/Bark/...) but route prefs to this instance's own storage
+// (CustomServices[service][key]), so several channels of the same type can
+// coexist with fully independent configs. Mirrors getCustom: except for the
+// plist that supplies the form.
++ (NSArray*)getTypedCustom:(NSString*)service
+                      type:(NSString*)type
+                       ref:(PSListController*)listController {
+  NSArray* specifiers =
+      [listController loadSpecifiersFromPlistName:type
+                                           target:listController];
+
+  NSArray* specialCells = @[ @(PSGroupCell), @(PSButtonCell), @(PSLinkCell) ];
+
+  for (PSSpecifier* specifier in specifiers) {
+    [specifier setProperty:service forKey:@"service"];
+    if ([specialCells
+            containsObject:@(specifier
+                                 .cellType)]) { // don't set these properties on
+                                                // group specifiers
+      if (XEq(specifier.name, @"App List") ||
+        XEq(specifier.name, NSPLocalizedString(@"App List", nil))) {
+        // Custom service app lists live nested inside the service object
+        // (CustomServices[service][appList]), like built-in services. The app
+        // list controller needs to know which storage to use.
+        [specifier setProperty:@YES forKey:@"isCustomService"];
+      } else if (XEq(specifier.name, @"App Customization") ||
+                 XEq(specifier.name, NSPLocalizedString(@"App Customization", nil))) {
+        [specifier setProperty:service forKey:@"service"];
+      }
+      continue;
+    }
+    [specifier setProperty:@YES forKey:@"enabled"];
+    [specifier setProperty:@NO forKey:@"isCustomApp"];
+    specifier->setter = @selector(setPreferenceValue:forCustomSpecifier:);
+    specifier->getter = @selector(readCustomPreferenceValue:);
+    specifier.target = self;
+  }
+
+  return specifiers;
+}
+
 + (void)setPreferenceValue:(id)value
     forBuiltInServiceSpecifier:(PSSpecifier*)specifier {
   NSString* service = [specifier propertyForKey:@"service"];
